@@ -1,69 +1,60 @@
 import Image from "next/image";
+import { TeamRow } from "@/components/TeamRow";
+import { Team } from "@/types/team";
+import { ConferenceTable } from "@/components/ConferenceTable";
+
+const eastTeams: Team[] = [
+  { id: "det", name: "Detroit Pistons", conference: "east", prevRecord: { wins: 60, losses: 22 } },
+  { id: "bos", name: "Boston Celtics", conference: "east", prevRecord: { wins: 56, losses: 26 } },
+  { id: "ny", name: "New York Knicks", conference: "east", prevRecord: { wins: 53, losses: 29 } },
+  { id: "cle", name: "Cleveland Cavaliers", conference: "east", prevRecord: { wins: 52, losses: 30 } },
+  { id: "tor", name: "Toronto Raptors", conference: "east", prevRecord: { wins: 46, losses: 36 } },
+  { id: "atl", name: "Atlanta Hawks", conference: "east", prevRecord: { wins: 46, losses: 36 } },
+  { id: "phi", name: "Philadelphia 76ers", conference: "east", prevRecord: { wins: 45, losses: 37 } },
+  { id: "orl", name: "Orlando Magic", conference: "east", prevRecord: { wins: 45, losses: 37 } },
+  { id: "cha", name: "Charlotte Hornets", conference: "east", prevRecord: { wins: 44, losses: 38 } },
+  { id: "mia", name: "Miami Heat", conference: "east", prevRecord: { wins: 43, losses: 39 } },
+  { id: "mil", name: "Milwaukee Bucks", conference: "east", prevRecord: { wins: 32, losses: 50 } },
+  { id: "chi", name: "Chicago Bulls", conference: "east", prevRecord: { wins: 31, losses: 51 } },
+  { id: "bkn", name: "Brooklyn Nets", conference: "east", prevRecord: { wins: 20, losses: 62 } },
+  { id: "ind", name: "Indiana Pacers", conference: "east", prevRecord: { wins: 19, losses: 63 } },
+  { id: "wsh", name: "Washington Wizards", conference: "east", prevRecord: { wins: 17, losses: 65 } },
+];
+
+const westTeams: Team[] = [
+  { id: "okc", name: "Oklahoma City Thunder", conference: "west", prevRecord: { wins: 64, losses: 18 } },
+  { id: "sas", name: "San Antonio Spurs", conference: "west", prevRecord: { wins: 62, losses: 20 } },
+  { id: "den", name: "Denver Nuggets", conference: "west", prevRecord: { wins: 54, losses: 28 } },
+  { id: "lal", name: "Los Angeles Lakers", conference: "west", prevRecord: { wins: 53, losses: 29 } },
+  { id: "hou", name: "Houston Rockets", conference: "west", prevRecord: { wins: 52, losses: 30 } },
+  { id: "min", name: "Minnesota Timberwolves", conference: "west", prevRecord: { wins: 49, losses: 33 } },
+  { id: "phx", name: "Phoenix Suns", conference: "west", prevRecord: { wins: 45, losses: 37 } },
+  { id: "por", name: "Portland Trail Blazers", conference: "west", prevRecord: { wins: 42, losses: 40 } },
+  { id: "lac", name: "Los Angeles Clippers", conference: "west", prevRecord: { wins: 42, losses: 40 } },
+  { id: "gsw", name: "Golden State Warriors", conference: "west", prevRecord: { wins: 37, losses: 45 } },
+  { id: "nop", name: "New Orleans Pelicans", conference: "west", prevRecord: { wins: 26, losses: 56 } },
+  { id: "dal", name: "Dallas Mavericks", conference: "west", prevRecord: { wins: 26, losses: 56 } },
+  { id: "mem", name: "Memphis Grizzlies", conference: "west", prevRecord: { wins: 25, losses: 57 } },
+  { id: "sac", name: "Sacramento Kings", conference: "west", prevRecord: { wins: 22, losses: 60 } },
+  { id: "uta", name: "Utah Jazz", conference: "west", prevRecord: { wins: 22, losses: 60 } },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main>
+      <h1>NBA Oracle</h1>
+      <div className="east-west-container grid grid-cols-2 gap-8">
+        <ConferenceTable title="Eastern Conference" teams={eastTeams} />
+        <ConferenceTable title="Western Conference" teams={westTeams} />
+
+      </div>
+    </main>
+  );
+
+  return (
+    <main className="mx-auto max-w-xl p-8">
+      <h1 className="mb-4 text-xl font-semibold">NBA Oracle</h1>
+      <TeamRow rank={4} team={sampleTeam} />
+    </main>
   );
 }
