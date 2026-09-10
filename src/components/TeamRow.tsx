@@ -1,15 +1,28 @@
 import { Team } from "@/types/team";
 import Image from "next/image";
-
+import { motion } from "motion/react";
 
 type TeamRowProps = {
     team: Team;
     row: number;
-}
+    teamPredictedWins: number | "";
+    onWinsChange: (teamId: string, wins: number | "") => void;
+};
 
-export function TeamRow({ team, row }: TeamRowProps) {
+export function TeamRow({
+    team,
+    row,
+    teamPredictedWins,
+    onWinsChange,
+}: TeamRowProps) {
     return (
-        <div className="col-start-2 col-span-4 grid grid-cols-subgrid"
+        <motion.div
+            layout
+            transition={{
+                duration: 0.4,
+                ease: "easeInOut",
+            }}
+            className="col-start-2 col-span-4 grid grid-cols-subgrid"
             style={{ gridRow: row }}>
             <div className="teamName flex items-center gap-2">
                 <Image
@@ -23,9 +36,39 @@ export function TeamRow({ team, row }: TeamRowProps) {
             <span>
                 {team.prevRecord.wins}-{team.prevRecord.losses}
             </span>
-            <span>-</span>
-            <span>-</span>
-        </div>
+            <span>
+                <input
+                    type="number"
+                    min="0"
+                    max="82"
+                    step="1"
+                    value={teamPredictedWins}
+                    onChange={(event) => {
+                        const rawValue = event.target.value;
+
+                        if (rawValue === "") {
+                            onWinsChange(team.id, "");
+                            return;
+                        }
+
+                        const wins = Number(rawValue);
+                        const limitedWins = Math.min(82, Math.max(0, wins));
+
+                        onWinsChange(team.id, limitedWins);
+                    }}
+                    onFocus={(event) => {
+                        event.currentTarget.select();
+                    }}
+                    className="w-14 rounded border border-zinc-300 px-2 py-1 text-center"
+                />
+                -{teamPredictedWins === "" ? "-" : 82 - teamPredictedWins}
+            </span>
+            <span>
+                {teamPredictedWins === ""
+                    ? "-"
+                    : teamPredictedWins - team.prevRecord.wins}
+            </span>
+        </motion.div>
     )
 
     //       return (

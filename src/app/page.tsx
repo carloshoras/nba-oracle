@@ -1,12 +1,16 @@
-import Image from "next/image";
-import { TeamRow } from "@/components/TeamRow";
+"use client";
+
 import { Team } from "@/types/team";
 import { ConferenceTable } from "@/components/ConferenceTable";
+import { useState } from "react";
+
+type PredictedWins = Record<string, number | "">;
+
 
 const eastTeams: Team[] = [
   { id: "det", name: "Detroit Pistons", conference: "east", prevRecord: { wins: 60, losses: 22 } },
   { id: "bos", name: "Boston Celtics", conference: "east", prevRecord: { wins: 56, losses: 26 } },
-  { id: "ny", name: "New York Knicks", conference: "east", prevRecord: { wins: 53, losses: 29 } },
+  { id: "nyk", name: "New York Knicks", conference: "east", prevRecord: { wins: 53, losses: 29 } },
   { id: "cle", name: "Cleveland Cavaliers", conference: "east", prevRecord: { wins: 52, losses: 30 } },
   { id: "tor", name: "Toronto Raptors", conference: "east", prevRecord: { wins: 46, losses: 36 } },
   { id: "atl", name: "Atlanta Hawks", conference: "east", prevRecord: { wins: 46, losses: 36 } },
@@ -39,22 +43,99 @@ const westTeams: Team[] = [
   { id: "uta", name: "Utah Jazz", conference: "west", prevRecord: { wins: 22, losses: 60 } },
 ];
 
+const allTeams = [...eastTeams, ...westTeams];
+
+
+const initialPredictedWins: PredictedWins = {
+  det: 46,
+  bos: 49,
+  nyk: 48,
+  cle: 47,
+  tor: 46,
+  atl: 44,
+  phi: 51,
+  orl: 44,
+  cha: 34,
+  mia: 47,
+  mil: 24,
+  chi: 26,
+  bkn: 22,
+  ind: 43,
+  wsh: 36,
+
+  okc: 59,
+  sas: 59,
+  den: 50,
+  lal: 49,
+  hou: 54,
+  min: 45,
+  phx: 46,
+  por: 43,
+  lac: 39,
+  gsw: 42,
+  nop: 35,
+  dal: 31,
+  mem: 24,
+  sac: 18,
+  uta: 29,
+};
+
+// const initialPredictedWins: PredictedWins = Object.fromEntries(
+//   allTeams.map((team) => [team.id, 0])
+// );
+
+
+
 export default function Home() {
+
+  const [predictedWins, setPredictedWins] = useState<PredictedWins>(initialPredictedWins);
+
+  const totalPredictedWins = Object.values(predictedWins).reduce<number>(
+    (total, wins) => total + (typeof wins === "number" ? wins : 0),
+    0
+  );
+
+  const isValidTotal = totalPredictedWins === 1230;
+
   return (
     <main>
       <h1>NBA Oracle</h1>
       <div className="east-west-container grid grid-cols-2 gap-8">
-        <ConferenceTable title="Eastern Conference" teams={eastTeams} />
-        <ConferenceTable title="Western Conference" teams={westTeams} />
+        <ConferenceTable
+          title="Eastern Conference"
+          teams={eastTeams}
+          predictedWins={predictedWins}
+          onWinsChange={(teamId, wins) => {
+            setPredictedWins((currentWins) => ({
+              ...currentWins,
+              [teamId]: wins,
+            }));
+          }}
+        />
+
+        <ConferenceTable
+          title="Western Conference"
+          teams={westTeams}
+          predictedWins={predictedWins}
+          onWinsChange={(teamId, wins) => {
+            setPredictedWins((currentWins) => ({
+              ...currentWins,
+              [teamId]: wins,
+            }));
+          }}
+        />
+        <p>
+          Total global: {totalPredictedWins} / 1230 victorias
+        </p>
+
+        <p>
+          {isValidTotal
+            ? "El total de victorias es correcto."
+            : "El total debe ser exactamente 1230."}
+        </p>
 
       </div>
     </main>
   );
 
-  return (
-    <main className="mx-auto max-w-xl p-8">
-      <h1 className="mb-4 text-xl font-semibold">NBA Oracle</h1>
-      <TeamRow rank={4} team={sampleTeam} />
-    </main>
-  );
 }
