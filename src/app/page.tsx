@@ -2,7 +2,7 @@
 
 import { Team } from "@/types/team";
 import { ConferenceTable } from "@/components/ConferenceTable";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type PredictedWins = Record<string, number | "">;
 
@@ -97,6 +97,16 @@ export default function Home() {
 
   const isValidTotal = totalPredictedWins === 1230;
 
+  const handleWinsChange = useCallback(
+    (teamId: string, wins: number | "") => {
+      setPredictedWins((currentWins) => ({
+        ...currentWins,
+        [teamId]: wins,
+      }));
+    },
+    []
+  );
+
   return (
     <main>
       <h1>NBA Oracle</h1>
@@ -105,24 +115,14 @@ export default function Home() {
           title="Eastern Conference"
           teams={eastTeams}
           predictedWins={predictedWins}
-          onWinsChange={(teamId, wins) => {
-            setPredictedWins((currentWins) => ({
-              ...currentWins,
-              [teamId]: wins,
-            }));
-          }}
+          onWinsChange={handleWinsChange}
         />
 
         <ConferenceTable
           title="Western Conference"
           teams={westTeams}
           predictedWins={predictedWins}
-          onWinsChange={(teamId, wins) => {
-            setPredictedWins((currentWins) => ({
-              ...currentWins,
-              [teamId]: wins,
-            }));
-          }}
+          onWinsChange={handleWinsChange}
         />
         <p>
           Total global: {totalPredictedWins} / 1230 victorias

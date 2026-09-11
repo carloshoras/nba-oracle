@@ -1,6 +1,7 @@
 import { Team } from "@/types/team";
 import Image from "next/image";
 import { motion } from "motion/react";
+import { memo, useEffect, useState } from "react";
 
 type TeamRowProps = {
     team: Team;
@@ -9,12 +10,26 @@ type TeamRowProps = {
     onWinsChange: (teamId: string, wins: number | "") => void;
 };
 
-export function TeamRow({
+export const TeamRow = memo(function TeamRow({
     team,
     row,
     teamPredictedWins,
     onWinsChange,
 }: TeamRowProps) {
+
+    console.log("TeamRow re-render of team", team.id)
+
+    const [draftWins, setDraftWins] = useState<number | "">(teamPredictedWins);
+
+    useEffect(() => {
+        console.log("inside TeamRow useEffect")
+        setDraftWins(teamPredictedWins);
+    }, [teamPredictedWins]);
+
+    function commitWins() {
+        console.log(`Committing wins for team ${team.id}: ${draftWins}`);
+        onWinsChange(team.id, draftWins);
+    }
     return (
         <motion.div
             layout
@@ -42,48 +57,41 @@ export function TeamRow({
                     min="0"
                     max="82"
                     step="1"
-                    value={teamPredictedWins}
+                    value={draftWins}
                     onChange={(event) => {
                         const rawValue = event.target.value;
 
                         if (rawValue === "") {
-                            onWinsChange(team.id, "");
+                            setDraftWins("");
                             return;
                         }
 
                         const wins = Number(rawValue);
                         const limitedWins = Math.min(82, Math.max(0, wins));
 
-                        onWinsChange(team.id, limitedWins);
+                        setDraftWins(limitedWins);
+                        if (rawValue.length >= 2) onWinsChange(team.id, limitedWins);
                     }}
                     onFocus={(event) => {
                         event.currentTarget.select();
                     }}
+                    onBlur={commitWins}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            event.currentTarget.blur();
+                        }
+                    }}
                     className="w-14 rounded border border-zinc-300 px-2 py-1 text-center"
                 />
-                -{teamPredictedWins === "" ? "-" : 82 - teamPredictedWins}
+                -{draftWins === "" ? "-" : 82 - draftWins}
             </span>
             <span>
-                {teamPredictedWins === ""
+                {draftWins === ""
                     ? "-"
-                    : teamPredictedWins - team.prevRecord.wins}
+                    : draftWins - team.prevRecord.wins}
             </span>
         </motion.div>
     )
 
-    //       return (
-    //     <div className="flex items-center gap-4 border-b border-zinc-200 py-3">
-    //       <span className="w-6 text-center font-semibold text-zinc-500">
-    //         {rank}
-    //       </span>
+})
 
-    //       <div className="h-8 w-8 rounded-full bg-zinc-300" />
-
-    //       <span className="flex-1 font-medium">{team.name}</span>
-
-    //       <span className="w-16 text-sm text-zinc-500">
-    //         {team.previousRecord.wins}-{team.previousRecord.losses}
-    //       </span>
-    //     </div>
-    //   );
-}
