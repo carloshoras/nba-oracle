@@ -2,10 +2,11 @@
 
 import { Team } from "@/types/team";
 import { ConferenceTable } from "@/components/ConferenceTable";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type PredictedWins = Record<string, number | "">;
 
+const STORAGE_KEY = "nba-oracle-predicted-wins";
 
 const eastTeams: Team[] = [
   { id: "det", name: "Detroit Pistons", conference: "east", prevRecord: { wins: 60, losses: 22 } },
@@ -46,63 +47,64 @@ const westTeams: Team[] = [
 const allTeams = [...eastTeams, ...westTeams];
 
 
-const initialPredictedWins: PredictedWins = {
-  det: 46,
-  bos: 49,
-  nyk: 48,
-  cle: 47,
-  tor: 46,
-  atl: 44,
-  phi: 51,
-  orl: 44,
-  cha: 34,
-  mia: 47,
-  mil: 24,
-  chi: 26,
-  bkn: 22,
-  ind: 43,
-  wsh: 36,
-
-  okc: 59,
-  sas: 59,
-  den: 50,
-  lal: 49,
-  hou: 54,
-  min: 45,
-  phx: 46,
-  por: 43,
-  lac: 39,
-  gsw: 42,
-  nop: 35,
-  dal: 31,
-  mem: 24,
-  sac: 18,
-  uta: 29,
-};
-
-// const initialPredictedWins: PredictedWins = Object.fromEntries(
-//   allTeams.map((team) => [team.id, 0])
-// );
+const initialPredictedWins: PredictedWins = Object.fromEntries(
+  allTeams.map((team) => [team.id, 0])
+);
 
 
 
 export default function Home() {
 
-  const [predictedWins, setPredictedWins] = useState<PredictedWins>(initialPredictedWins);
+  const [predictedWins, setPredictedWins] =
+    useState<PredictedWins | null>(null);
 
-  const totalPredictedWins = Object.values(predictedWins).reduce<number>(
+  useEffect(() => {
+    const storedWins = localStorage.getItem(STORAGE_KEY);
+
+    if (storedWins) {
+      try {
+        const parsedWins = JSON.parse(storedWins) as PredictedWins;
+
+        setPredictedWins({
+          ...initialPredictedWins,
+          ...parsedWins,
+        });
+        return;
+      } catch {
+        console.warn("Could not load saved predictions");
+      }
+    }
+
+    setPredictedWins(initialPredictedWins);
+  }, []);
+
+  useEffect(() => {
+    if (predictedWins === null) {
+      return;
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(predictedWins));
+  }, [predictedWins]);
+
+  const totalPredictedWins = Object.values(predictedWins ?? {}).reduce<number>(
     (total, wins) => total + (typeof wins === "number" ? wins : 0),
     0
   );
 
-  const isValidTotal = totalPredictedWins === 1230;
+  const isValidTotal = predictedWins !== null && totalPredictedWins === 1230;
 
   const handleWinsChange = useCallback(
     (teamId: string, wins: number | "") => {
-      setPredictedWins((currentWins) => ({
-        ...currentWins,
-        [teamId]: wins,
-      }));
+      setPredictedWins((currentWins) => {
+        if (currentWins === null) {
+          return currentWins;
+        }
+
+        return {
+          ...currentWins,
+          [teamId]: wins,
+        };
+      });
     },
     []
   );
@@ -125,7 +127,7 @@ export default function Home() {
           onWinsChange={handleWinsChange}
         />
         <p>
-          Total global: {totalPredictedWins} / 1230 victorias
+          Total wins: {totalPredictedWins} / 1230 victorias
         </p>
 
         <p>

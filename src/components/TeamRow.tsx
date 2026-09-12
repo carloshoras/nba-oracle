@@ -6,7 +6,7 @@ import { memo, useEffect, useState } from "react";
 type TeamRowProps = {
     team: Team;
     row: number;
-    teamPredictedWins: number | "";
+    teamPredictedWins: number | "" | null;
     onWinsChange: (teamId: string, wins: number | "") => void;
 };
 
@@ -16,20 +16,18 @@ export const TeamRow = memo(function TeamRow({
     teamPredictedWins,
     onWinsChange,
 }: TeamRowProps) {
-
-    console.log("TeamRow re-render of team", team.id)
-
-    const [draftWins, setDraftWins] = useState<number | "">(teamPredictedWins);
+    const [draftWins, setDraftWins] = useState<number | "" | null>(teamPredictedWins);
 
     useEffect(() => {
-        console.log("inside TeamRow useEffect")
         setDraftWins(teamPredictedWins);
     }, [teamPredictedWins]);
 
     function commitWins() {
-        console.log(`Committing wins for team ${team.id}: ${draftWins}`);
-        onWinsChange(team.id, draftWins);
+        if (draftWins !== null) {
+            onWinsChange(team.id, draftWins);
+        }
     }
+
     return (
         <motion.div
             layout
@@ -38,7 +36,8 @@ export const TeamRow = memo(function TeamRow({
                 ease: "easeInOut",
             }}
             className="col-start-2 col-span-4 grid grid-cols-subgrid"
-            style={{ gridRow: row }}>
+            style={{ gridRow: row }}
+        >
             <div className="teamName flex items-center gap-2">
                 <Image
                     src={`/logos/${team.id}.svg`}
@@ -48,50 +47,63 @@ export const TeamRow = memo(function TeamRow({
                 />
                 <span>{team.name}</span>
             </div>
+
             <span>
                 {team.prevRecord.wins}-{team.prevRecord.losses}
             </span>
+
             <span>
-                <input
-                    type="number"
-                    min="0"
-                    max="82"
-                    step="1"
-                    value={draftWins}
-                    onChange={(event) => {
-                        const rawValue = event.target.value;
+                {teamPredictedWins === null ? (
+                    <div
+                        aria-label="Loading prediction"
+                        className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-800"
+                    />
+                ) : (
+                    <>
+                        <input
+                            type="number"
+                            min="0"
+                            max="82"
+                            step="1"
+                            value={draftWins ?? ""}
+                            onChange={(event) => {
+                                const rawValue = event.target.value;
 
-                        if (rawValue === "") {
-                            setDraftWins("");
-                            return;
-                        }
+                                if (rawValue === "") {
+                                    setDraftWins("");
+                                    return;
+                                }
 
-                        const wins = Number(rawValue);
-                        const limitedWins = Math.min(82, Math.max(0, wins));
+                                const wins = Number(rawValue);
+                                const limitedWins = Math.min(82, Math.max(0, wins));
 
-                        setDraftWins(limitedWins);
-                        if (rawValue.length >= 2) onWinsChange(team.id, limitedWins);
-                    }}
-                    onFocus={(event) => {
-                        event.currentTarget.select();
-                    }}
-                    onBlur={commitWins}
-                    onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                            event.currentTarget.blur();
-                        }
-                    }}
-                    className="w-14 rounded border border-zinc-300 px-2 py-1 text-center"
-                />
-                -{draftWins === "" ? "-" : 82 - draftWins}
+                                setDraftWins(limitedWins);
+                                if (rawValue.length >= 2) {
+                                    onWinsChange(team.id, limitedWins);
+                                }
+                            }}
+                            onFocus={(event) => {
+                                event.currentTarget.select();
+                            }}
+                            onBlur={commitWins}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter") {
+                                    event.currentTarget.blur();
+                                }
+                            }}
+                            className="w-14 rounded border border-zinc-300 px-2 py-1 text-center"
+                        />
+                        -{draftWins === null || draftWins === "" ? "-" : 82 - draftWins}
+                    </>
+                )}
             </span>
+
             <span>
-                {draftWins === ""
+                {teamPredictedWins === null || draftWins === null || draftWins === ""
                     ? "-"
                     : draftWins - team.prevRecord.wins}
             </span>
         </motion.div>
-    )
-
-})
+    );
+});
 

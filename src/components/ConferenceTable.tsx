@@ -5,7 +5,7 @@ import { TeamRow } from "./TeamRow";
 type ConferenceTableProps = {
     title: string;
     teams: Team[];
-    predictedWins: Record<string, number | "">;
+    predictedWins: Record<string, number | ""> | null;
     onWinsChange: (teamId: string, wins: number | "") => void;
 };
 
@@ -17,14 +17,14 @@ export function ConferenceTable({
 }: ConferenceTableProps) {
 
     const conferenceWins = teams.reduce((total, team) => {
-        const wins = predictedWins[team.id];
+        const wins = predictedWins?.[team.id];
 
         return total + (typeof wins === "number" ? wins : 0);
     }, 0);
 
     const sortedTeams = [...teams].sort((teamA, teamB) => {
-        const winsA = predictedWins[teamA.id];
-        const winsB = predictedWins[teamB.id];
+        const winsA = predictedWins?.[teamA.id];
+        const winsB = predictedWins?.[teamB.id];
 
         const numericWinsA = typeof winsA === "number" ? winsA : -1;
         const numericWinsB = typeof winsB === "number" ? winsB : -1;
@@ -51,7 +51,7 @@ export function ConferenceTable({
                         key={team.id}
                         team={team}
                         row={index + 2}
-                        teamPredictedWins={predictedWins[team.id]}
+                        teamPredictedWins={predictedWins?.[team.id] ?? null}
                         onWinsChange={onWinsChange} />
                 ))}
             </div>
