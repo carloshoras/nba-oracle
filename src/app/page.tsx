@@ -55,18 +55,14 @@ const initialPredictedWins: PredictedWins = Object.fromEntries(
 
 export default function Home() {
 
-  const [predictedWins, setPredictedWins] =
-    useState<PredictedWins | null>(null);
+  const [predictedWins, setPredictedWins] = useState<PredictedWins | null>(null);
 
   useEffect(() => {
     const storedWins = localStorage.getItem(STORAGE_KEY);
-
     if (storedWins) {
       try {
         const parsedWins = JSON.parse(storedWins) as PredictedWins;
-
         setPredictedWins({
-          ...initialPredictedWins,
           ...parsedWins,
         });
         return;
@@ -74,7 +70,6 @@ export default function Home() {
         console.warn("Could not load saved predictions");
       }
     }
-
     setPredictedWins(initialPredictedWins);
   }, []);
 
@@ -109,6 +104,10 @@ export default function Home() {
     []
   );
 
+  const handleReset = useCallback(() => {
+    setPredictedWins(initialPredictedWins);
+  }, []);
+
   return (
     <main>
       <h1>NBA Oracle</h1>
@@ -126,33 +125,49 @@ export default function Home() {
           predictedWins={predictedWins}
           onWinsChange={handleWinsChange}
         />
-        <div
-          className="flex cursor-help items-center gap-2"
-          title={
-            predictedWins === null
-              ? "Checking total wins..."
-              : isValidTotal
-                ? "All wins are balanced."
-                : "An NBA regular season has 1,230 games. One game is one win, so all wins must add up to exactly 1,230."
-          }
-        >
-          <p>
-            <span className="font-bold">Total wins:</span>{" "}
-            <span className={isValidTotal ? "text-green-600" : "text-amber-500"}>
-              {totalPredictedWins}
-            </span>{" "}
-            / 1230
-          </p>
-
-          <span
-            aria-hidden="true"
-            className={isValidTotal ? "text-green-600" : "text-amber-500"}
+        <div className="col-span-2 flex items-center justify-between pt-4">
+          <div
+            className="flex cursor-help items-center gap-2"
+            title={"An NBA regular season has 1,230 games. One game is one win, so all wins must add up to exactly 1,230."}
           >
-            {isValidTotal ? "✓" : "!"}
-          </span>
+            <p>
+              <span className="font-bold">Total wins:</span>{" "}
+              <span className={isValidTotal ? "text-green-600" : "text-amber-500"}>
+                {totalPredictedWins}
+              </span>{" "}
+              / 1230
+            </p>
+
+            <span
+              aria-hidden="true"
+              className={isValidTotal ? "text-green-600" : "text-amber-500"}
+            >
+              {isValidTotal ? "✓" : "!"}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleReset}
+            className="rounded border border-zinc-300 px-3 py-1 text-sm font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          >
+            Reset predictions
+          </button>
         </div>
 
       </div>
+
+      <footer className="mt-12 text-center text-sm text-zinc-500">
+        Created by{" "}
+        <a
+          href="https://x.com/carlettodisetto"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-zinc-700 underline underline-offset-4 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+        >
+          @carlettodisetto
+        </a>
+      </footer>
     </main>
   );
 
