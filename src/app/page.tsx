@@ -126,15 +126,31 @@ export default function Home() {
           predictedWins={predictedWins}
           onWinsChange={handleWinsChange}
         />
-        <p>
-          Total wins: {totalPredictedWins} / 1230 victorias
-        </p>
+        <div
+          className="flex cursor-help items-center gap-2"
+          title={
+            predictedWins === null
+              ? "Checking total wins..."
+              : isValidTotal
+                ? "All wins are balanced."
+                : "An NBA regular season has 1,230 games. One game is one win, so all wins must add up to exactly 1,230."
+          }
+        >
+          <p>
+            <span className="font-bold">Total wins:</span>{" "}
+            <span className={isValidTotal ? "text-green-600" : "text-amber-500"}>
+              {totalPredictedWins}
+            </span>{" "}
+            / 1230
+          </p>
 
-        <p>
-          {isValidTotal
-            ? "El total de victorias es correcto."
-            : "El total debe ser exactamente 1230."}
-        </p>
+          <span
+            aria-hidden="true"
+            className={isValidTotal ? "text-green-600" : "text-amber-500"}
+          >
+            {isValidTotal ? "✓" : "!"}
+          </span>
+        </div>
 
       </div>
     </main>
