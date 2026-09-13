@@ -110,13 +110,45 @@ export default function Home() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-      <header className="mb-4 text-center sm:text-left">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-          NBA Oracle
-        </h1>
-        <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-          Predict the 2026-27 NBA standings and test your regular season forecasts.
-        </p>
+      <header className="mb-4 flex flex-row gap-4 text-center items-center sm:justify-between sm:text-left">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+            NBA Oracle
+          </h1>
+          <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            Predict the 2026-27 NBA standings and wins.
+          </p>
+        </div>
+
+        <div className="flex flex-row items-center gap-[110px] rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 shadow-sm">
+          <div
+            className="flex cursor-help items-center gap-2"
+            title={"An NBA regular season has 1,230 games. One game is one win, so all wins must add up to exactly 1,230."}
+          >
+            <p className="text-base font-medium text-zinc-700 dark:text-zinc-300">
+              <span className="font-bold text-zinc-900 dark:text-zinc-100">Total wins:</span>{" "}
+              <span className={`font-bold tabular-nums ${isValidTotal ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}`}>
+                {totalPredictedWins.toLocaleString()}
+              </span>{" "}
+              / 1,230
+            </p>
+
+            <span
+              aria-hidden="true"
+              className={`font-bold ${isValidTotal ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}`}
+            >
+              {isValidTotal ? "✓" : "!"}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleReset}
+            className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-3.5 py-1.5 text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          >
+            Reset predictions
+          </button>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -133,36 +165,6 @@ export default function Home() {
           predictedWins={predictedWins}
           onWinsChange={handleWinsChange}
         />
-      </div>
-
-      <div className="mt-8 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div
-          className="flex cursor-help items-center gap-2"
-          title={"An NBA regular season has 1,230 games. One game is one win, so all wins must add up to exactly 1,230."}
-        >
-          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            <span className="font-bold text-zinc-900 dark:text-zinc-100">Total wins:</span>{" "}
-            <span className={`font-bold tabular-nums ${isValidTotal ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}`}>
-              {totalPredictedWins.toLocaleString()}
-            </span>{" "}
-            / 1,230
-          </p>
-
-          <span
-            aria-hidden="true"
-            className={`font-bold ${isValidTotal ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}`}
-          >
-            {isValidTotal ? "✓" : "!"}
-          </span>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleReset}
-          className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-3.5 py-1.5 text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-        >
-          Reset predictions
-        </button>
       </div>
 
       <footer className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400">

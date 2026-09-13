@@ -86,7 +86,7 @@ export const TeamRow = memo(function TeamRow({
                 <span className="truncate">{team.name}</span>
             </div>
 
-            <span className="text-xs flex justify-center font-medium tabular-nums text-zinc-500 dark:text-zinc-400">
+            <span className="text-[0.85rem] flex justify-center font-medium tabular-nums text-zinc-500 dark:text-zinc-400">
                 {team.prevRecord.wins}-{team.prevRecord.losses}
             </span>
 
@@ -129,9 +129,9 @@ export const TeamRow = memo(function TeamRow({
                                     event.currentTarget.blur();
                                 }
                             }}
-                            className="w-12 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-1 py-0.5 text-center text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-950 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+                            className="w-12 cursor-pointer appearance-none rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-1 py-0.5 text-center text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-950 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                         />
-                        <span className="text-xs font-normal tabular-nums text-zinc-500 dark:text-zinc-400">
+                        <span className="text-[0.85rem] font-normal tabular-nums text-zinc-500 dark:text-zinc-400">
                             -{draftWins === null || draftWins === "" ? "-" : 82 - draftWins}
                         </span>
                     </>
@@ -140,14 +140,14 @@ export const TeamRow = memo(function TeamRow({
 
             <span className="text-right flex justify-center">
                 {teamPredictedWins === null || draftWins === null || draftWins === "" ? (
-                    <span className="text-xs text-zinc-400">-</span>
+                    <span className="text-[0.85rem] text-zinc-400">-</span>
                 ) : (
                     (() => {
                         const delta = draftWins - team.prevRecord.wins;
                         const { text, icon, iconClassName } = getDeltaDisplay(delta);
 
                         return (
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
+                            <span className="inline-flex items-center gap-1 text-[0.85rem] font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
                                 {icon && <span className={`text-[10px] ${iconClassName}`}>{icon}</span>}
                                 <span>{text}</span>
                             </span>
