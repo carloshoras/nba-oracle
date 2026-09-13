@@ -33,18 +33,24 @@ export function ConferenceTable({
     });
 
     return (
-        <section>
-            <h2 className="mb-2 text-lg font-bold">{title}</h2>
+        <section className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-5 py-3 shadow-sm">
+            <div className="flex items-center justify-between mb-2 pb-2 border-b border-zinc-100 dark:border-zinc-800">
+                <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide">
+                    {title}
+                </h2>
+                <span className="text-sm font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
+                    {conferenceWins} Conference wins
+                </span>
+            </div>
 
-            <div className="grid grid-cols-5 gap-2 border-b border-zinc-300 pb-1 text-xs uppercase tracking-wide text-zinc-500">
+            <div className="grid grid-cols-[auto_16rem_auto_6rem_auto] grid-rows-[repeat(16,auto)] gap-x-2 items-center justify-items-center text-[0.75rem] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 ">
                 <span>Seed</span>
                 <span>Team</span>
-                <span>25-26 Record</span>
-                <span>26-27 Record</span>
-                <span>Delta</span>
+                <span className="text-right sm:text-left">25–26 szn</span>
+                <span className="text-center">26–27 szn</span>
+                <span className="text-right">Δ wins</span>
 
                 <SeedRail count={sortedTeams.length} />
-
 
                 {sortedTeams.map((team, index) => (
                     <TeamRow
@@ -52,12 +58,11 @@ export function ConferenceTable({
                         team={team}
                         row={index + 2}
                         teamPredictedWins={predictedWins?.[team.id] ?? null}
-                        onWinsChange={onWinsChange} />
+                        onWinsChange={onWinsChange}
+                    />
                 ))}
             </div>
-            <p>
-                Total {title}: {conferenceWins} victorias
-            </p>
+
         </section>
     );
 }

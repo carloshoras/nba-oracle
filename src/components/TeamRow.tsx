@@ -13,25 +13,38 @@ type TeamRowProps = {
 function getDeltaDisplay(delta: number) {
     if (delta > 0) {
         return {
-            text: `+${delta} Wins`,
+            text: `+${delta}`,
             icon: "▲",
-            iconClassName: "text-green-600 dark:text-green-400",
+            iconClassName: "text-emerald-600 dark:text-emerald-400",
         };
     }
 
     if (delta < 0) {
         return {
-            text: `${delta} Wins`,
+            text: `${delta}`,
             icon: "▼",
-            iconClassName: "text-red-600 dark:text-red-400",
+            iconClassName: "text-rose-600 dark:text-rose-400",
         };
     }
 
     return {
-        text: "=",
-        icon: null,
-        iconClassName: "text-zinc-400",
+        text: "",
+        icon: "=",
+        iconClassName: "text-zinc-400 dark:text-zinc-500",
     };
+}
+
+function getRowStyle(row: number) {
+    const seed = row - 1;
+    let borderStyle = "border-b border-zinc-100 dark:border-zinc-800/60 py-[12px]";
+
+    if (seed === 6) {
+        borderStyle = "border-b-2 border-emerald-500/40 py-[12px]";
+    } else if (seed === 10) {
+        borderStyle = "border-b-2 border-amber-500/40 py-[12px]";
+    }
+
+    return `${borderStyle} hover:bg-zinc-50 dark:hover:bg-zinc-900/60 transition-colors px-1`;
 }
 
 export const TeamRow = memo(function TeamRow({
@@ -59,24 +72,25 @@ export const TeamRow = memo(function TeamRow({
                 duration: 0.4,
                 ease: "easeInOut",
             }}
-            className="col-start-2 col-span-4 grid grid-cols-subgrid"
+            className={`col-start-2 col-span-4 grid grid-cols-subgrid items-center ${getRowStyle(row)}`}
             style={{ gridRow: row }}
         >
-            <div className="teamName flex items-center gap-2">
+            <div className="teamName flex items-center gap-2.5 font-medium text-zinc-900 dark:text-zinc-100 text-sm">
                 <Image
                     src={`/logos/${team.id}.svg`}
                     alt={`${team.name} logo`}
-                    width={32}
-                    height={32}
+                    width={28}
+                    height={28}
+                    className="object-contain"
                 />
-                <span>{team.name}</span>
+                <span className="truncate">{team.name}</span>
             </div>
 
-            <span>
+            <span className="text-xs flex justify-center font-medium tabular-nums text-zinc-500 dark:text-zinc-400">
                 {team.prevRecord.wins}-{team.prevRecord.losses}
             </span>
 
-            <span>
+            <span className="text-sm font-semibold flex justify-center text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
                 {teamPredictedWins === null ? (
                     <div
                         aria-label="Loading prediction"
@@ -115,25 +129,27 @@ export const TeamRow = memo(function TeamRow({
                                     event.currentTarget.blur();
                                 }
                             }}
-                            className="w-14 rounded border border-zinc-300 px-2 py-1 text-center"
+                            className="w-12 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-1 py-0.5 text-center text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-950 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
                         />
-                        -{draftWins === null || draftWins === "" ? "-" : 82 - draftWins}
+                        <span className="text-xs font-normal tabular-nums text-zinc-500 dark:text-zinc-400">
+                            -{draftWins === null || draftWins === "" ? "-" : 82 - draftWins}
+                        </span>
                     </>
                 )}
             </span>
 
-            <span>
+            <span className="text-right flex justify-center">
                 {teamPredictedWins === null || draftWins === null || draftWins === "" ? (
-                    "-"
+                    <span className="text-xs text-zinc-400">-</span>
                 ) : (
                     (() => {
                         const delta = draftWins - team.prevRecord.wins;
                         const { text, icon, iconClassName } = getDeltaDisplay(delta);
 
                         return (
-                            <span className="inline-flex items-center gap-1 font-medium">
+                            <span className="inline-flex items-center gap-1 text-xs font-semibold tabular-nums text-zinc-500 dark:text-zinc-400">
                                 {icon && <span className={`text-[10px] ${iconClassName}`}>{icon}</span>}
-                                <span className="normal-case">{text}</span>
+                                <span>{text}</span>
                             </span>
                         );
                     })()
