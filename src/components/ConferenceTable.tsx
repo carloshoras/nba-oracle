@@ -33,7 +33,7 @@ export function ConferenceTable({
     });
 
     return (
-        <section className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-5 py-3 shadow-sm">
+        <section className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-3 py-3 shadow-sm lg:px-5">
             <div className="flex items-center justify-between mb-2 pb-2 border-b border-zinc-100 dark:border-zinc-800">
                 <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide">
                     {title}
@@ -43,11 +43,17 @@ export function ConferenceTable({
                 </span>
             </div>
 
-            <div className="grid grid-cols-[auto_16rem_auto_6rem_auto] grid-rows-[repeat(16,auto)] gap-x-2 items-center justify-items-center text-[0.75rem] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 ">
+            <div className="grid grid-cols-[2rem_minmax(6rem,1fr)_auto_5rem_auto] grid-rows-[repeat(16,_auto)] items-center justify-items-center gap-x-1 text-[0.75rem] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 lg:grid-cols-[auto_16rem_auto_6rem_auto] lg:gap-x-2 ">
                 <span>Seed</span>
                 <span>Team</span>
-                <span className="text-right sm:text-left">25–26 szn</span>
-                <span className="text-center">26–27 szn</span>
+                <span className="text-right sm:text-left">
+                    <span className="lg:hidden">25–26</span>
+                    <span className="hidden lg:inline">25–26 szn</span>
+                </span>
+                <span className="text-center">
+                    <span className="lg:hidden">26–27</span>
+                    <span className="hidden lg:inline">26–27 szn</span>
+                </span>
                 <span className="text-right">Δ wins</span>
 
                 <SeedRail count={sortedTeams.length} />
