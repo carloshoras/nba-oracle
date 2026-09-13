@@ -10,6 +10,30 @@ type TeamRowProps = {
     onWinsChange: (teamId: string, wins: number | "") => void;
 };
 
+function getDeltaDisplay(delta: number) {
+    if (delta > 0) {
+        return {
+            text: `+${delta} Wins`,
+            icon: "▲",
+            iconClassName: "text-green-600 dark:text-green-400",
+        };
+    }
+
+    if (delta < 0) {
+        return {
+            text: `${delta} Wins`,
+            icon: "▼",
+            iconClassName: "text-red-600 dark:text-red-400",
+        };
+    }
+
+    return {
+        text: "=",
+        icon: null,
+        iconClassName: "text-zinc-400",
+    };
+}
+
 export const TeamRow = memo(function TeamRow({
     team,
     row,
@@ -99,9 +123,21 @@ export const TeamRow = memo(function TeamRow({
             </span>
 
             <span>
-                {teamPredictedWins === null || draftWins === null || draftWins === ""
-                    ? "-"
-                    : draftWins - team.prevRecord.wins}
+                {teamPredictedWins === null || draftWins === null || draftWins === "" ? (
+                    "-"
+                ) : (
+                    (() => {
+                        const delta = draftWins - team.prevRecord.wins;
+                        const { text, icon, iconClassName } = getDeltaDisplay(delta);
+
+                        return (
+                            <span className="inline-flex items-center gap-1 font-medium">
+                                {icon && <span className={`text-[10px] ${iconClassName}`}>{icon}</span>}
+                                <span className="normal-case">{text}</span>
+                            </span>
+                        );
+                    })()
+                )}
             </span>
         </motion.div>
     );
