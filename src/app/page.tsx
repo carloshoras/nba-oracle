@@ -111,7 +111,7 @@ export default function Home() {
   const [activeConference, setActiveConference] = useState<"east" | "west">("east");
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+    <main className="mx-auto max-w-7xl px-4 py-3 sm:px-6 xl:px-8 min-[1024px]:max-[1199px]:w-[980px]">
       <header className="mb-4 flex flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
         <div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -127,7 +127,7 @@ export default function Home() {
             className="flex cursor-help items-center gap-2"
             title={"An NBA regular season has 1,230 games. One game is one win, so all wins must add up to exactly 1,230."}
           >
-            <p className="text-base font-medium text-zinc-700 dark:text-zinc-300">
+            <p className="w-max text-base font-medium text-zinc-700 dark:text-zinc-300">
               <span className="font-bold text-zinc-900 dark:text-zinc-100">Total wins:</span>{" "}
               <span className={`font-bold tabular-nums ${isValidTotal ? "text-emerald-600 dark:text-emerald-400" : "text-amber-500"}`}>
                 {totalPredictedWins.toLocaleString()}
@@ -146,7 +146,7 @@ export default function Home() {
           <button
             type="button"
             onClick={handleReset}
-            className="w-min rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 p-[6px] text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer lg:w-auto lg:px-3.5 lg:py-1.5"
+            className="w-min rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 p-[6px] text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer min-[1024px]:max-[1199px]:text-sm xl:w-auto xl:px-3.5 xl:py-1.5"
           >
             Reset predictions
           </button>
@@ -154,7 +154,7 @@ export default function Home() {
       </header>
 
       <div
-        className="mb-4 grid grid-cols-2 gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900 lg:hidden"
+        className="mb-4 grid grid-cols-2 gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900 xl:hidden"
         role="tablist"
         aria-label="Conference standings"
       >
@@ -163,7 +163,7 @@ export default function Home() {
           role="tab"
           aria-selected={activeConference === "east"}
           onClick={() => setActiveConference("east")}
-          className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors ${activeConference === "east"
+          className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors min-[1024px]:max-[1199px]:text-base ${activeConference === "east"
             ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100"
             : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
@@ -175,7 +175,7 @@ export default function Home() {
           role="tab"
           aria-selected={activeConference === "west"}
           onClick={() => setActiveConference("west")}
-          className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors ${activeConference === "west"
+          className={`rounded-md px-3 py-2 text-sm font-semibold transition-colors min-[1024px]:max-[1199px]:text-base ${activeConference === "west"
             ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-100"
             : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
@@ -184,7 +184,7 @@ export default function Home() {
         </button>
       </div>
 
-      <div className="lg:hidden">
+      <div className="xl:hidden">
         {activeConference === "east" ? (
           <ConferenceTable
             title="Eastern Conference"
@@ -202,7 +202,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="hidden gap-8 lg:grid lg:grid-cols-2">
+      <div className="hidden gap-8 xl:grid xl:grid-cols-2">
         <ConferenceTable
           title="Eastern Conference"
           teams={eastTeams}
@@ -218,15 +218,15 @@ export default function Home() {
         />
       </div>
 
-      <footer className="mt-12 text-center text-sm text-zinc-500 dark:text-zinc-400">
+      <footer className="mt-4 text-center text-sm text-zinc-500 dark:text-zinc-400">
         Created by{" "}
         <a
-          href="https://x.com/carlettodisetto"
+          href="https://x.com/makeLukaGreat"
           target="_blank"
           rel="noopener noreferrer"
           className="font-medium text-zinc-700 dark:text-zinc-300 underline underline-offset-4 hover:text-zinc-900 dark:hover:text-white"
         >
-          @carlettodisetto
+          @makeLukaGreat
         </a>
       </footer>
     </main>

@@ -75,7 +75,7 @@ export const TeamRow = memo(function TeamRow({
             className={`col-start-2 col-span-4 grid grid-cols-subgrid items-center ${getRowStyle(row)}`}
             style={{ gridRow: row }}
         >
-            <div className="teamName flex items-center gap-2.5 font-medium text-zinc-900 dark:text-zinc-100 text-sm">
+            <div className="teamName flex items-center gap-2.5 font-medium text-zinc-900 dark:text-zinc-100 text-sm min-[1024px]:max-[1199px]:text-base">
                 <Image
                     src={`/logos/${team.id}.svg`}
                     alt={`${team.name} logo`}
@@ -83,11 +83,11 @@ export const TeamRow = memo(function TeamRow({
                     height={28}
                     className="object-contain"
                 />
-                <span className="truncate lg:hidden">{team.shortName}</span>
-                <span className="hidden truncate lg:inline">{team.name}</span>
+                <span className="truncate md:hidden">{team.shortName}</span>
+                <span className="hidden truncate md:inline">{team.name}</span>
             </div>
 
-            <span className="text-[0.75rem] flex justify-center font-medium tabular-nums text-zinc-500 dark:text-zinc-400 lg:text-[0.85rem]">
+            <span className="text-[0.75rem] flex justify-center font-medium tabular-nums text-zinc-500 dark:text-zinc-400 xl:text-[0.85rem] min-[1024px]:max-[1199px]:text-[0.95rem]">
                 {team.prevRecord.wins}-{team.prevRecord.losses}
             </span>
 
@@ -130,9 +130,9 @@ export const TeamRow = memo(function TeamRow({
                                     event.currentTarget.blur();
                                 }
                             }}
-                            className="w-[34px] cursor-pointer appearance-none rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-1 py-0.5 text-center text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-950 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 lg:w-12 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            className="w-[34px] cursor-pointer appearance-none rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-1 py-0.5 text-center text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100 focus:bg-white dark:focus:bg-zinc-950 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 xl:w-12 min-[1024px]:max-[1199px]:w-12 min-[1024px]:max-[1199px]:text-base [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                         />
-                        <span className="text-[0.75rem] font-normal tabular-nums text-zinc-500 dark:text-zinc-400 lg:text-[0.85rem]">
+                        <span className="text-[0.75rem] font-normal tabular-nums text-zinc-500 dark:text-zinc-400 xl:text-[0.85rem] min-[1024px]:max-[1199px]:text-[0.95rem]">
                             -{draftWins === null || draftWins === "" ? "-" : 82 - draftWins}
                         </span>
                     </>
@@ -141,14 +141,14 @@ export const TeamRow = memo(function TeamRow({
 
             <span className="text-right flex justify-center">
                 {teamPredictedWins === null || draftWins === null || draftWins === "" ? (
-                    <span className="text-[0.75rem] text-zinc-400 lg:text-[0.85rem]">-</span>
+                    <span className="text-[0.75rem] text-zinc-400 xl:text-[0.85rem] min-[1024px]:max-[1199px]:text-[0.95rem]">-</span>
                 ) : (
                     (() => {
                         const delta = draftWins - team.prevRecord.wins;
                         const { text, icon, iconClassName } = getDeltaDisplay(delta);
 
                         return (
-                            <span className="inline-flex items-center gap-1 text-[0.75rem] font-semibold tabular-nums text-zinc-500 dark:text-zinc-400 lg:text-[0.85rem]">
+                            <span className="inline-flex items-center gap-1 text-[0.75rem] font-semibold tabular-nums text-zinc-500 dark:text-zinc-400 xl:text-[0.85rem] min-[1024px]:max-[1199px]:text-[0.95rem]">
                                 {icon && <span className={`text-[10px] ${iconClassName}`}>{icon}</span>}
                                 <span>{text}</span>
                             </span>
