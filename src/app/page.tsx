@@ -114,8 +114,19 @@ export default function Home() {
     <main className="mx-auto max-w-7xl px-4 py-3 sm:px-6 xl:px-8 min-[1024px]:max-[1199px]:w-[980px]">
       <header className="mb-4 flex flex-col gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-            NBA Oracle
+          <h1 className="flex items-center justify-center gap-3 text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 sm:justify-start sm:text-4xl">
+            <span
+              aria-hidden="true"
+              className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#ef5b4d] text-white shadow-sm sm:size-11"
+            >
+              <svg viewBox="0 0 32 32" className="size-7 sm:size-8" fill="none">
+                <circle cx="16" cy="16" r="11.5" stroke="currentColor" strokeWidth="2.4" />
+                <path d="M8.7 8.1c4.3 2.4 7.2 5.1 7.3 7.9 0 2.8-2.9 5.5-7.3 7.9M23.3 8.1c-4.3 2.4-7.2 5.1-7.3 7.9 0 2.8 2.9 5.5 7.3 7.9M4.8 16h22.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                <path d="M10.2 16c1.8-2.1 3.7-3.1 5.8-3.1s4 .9 5.8 3.1c-1.8 2.1-3.7 3.1-5.8 3.1s-4-.9-5.8-3.1Z" fill="#ef5b4d" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                <circle cx="16" cy="16" r="1.6" fill="currentColor" />
+              </svg>
+            </span>
+            <span>NBA Oracle</span>
           </h1>
           <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
             Predict the 2026-27 NBA standings and wins.
